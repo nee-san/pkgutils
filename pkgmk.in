@@ -834,6 +834,9 @@ main() {
 		. $FILE
 	done
 
+	export MAKEFLAGS="$MKFLAGS"
+	export NINJA_OPTIONS="$MKFLAGS"
+
 	check_directory "$PKGMK_SOURCE_DIR"
 	check_directory "$PKGMK_PACKAGE_DIR"
 	check_directory "`dirname $PKGMK_WORK_DIR`"
