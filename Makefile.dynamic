@@ -26,7 +26,7 @@ BINDIR = $(PREFIX)/bin
 MANDIR = $(PREFIX)/share/man
 ETCDIR = /etc
 
-VERSION = 5.44.0
+VERSION = 6.00.0-alpha
 NAME = pkgutils-$(VERSION)
 
 CXXFLAGS += -DNDEBUG
@@ -41,12 +41,15 @@ OBJECTS = main.o pkgutil.o pkgadd.o pkgrm.o pkginfo.o
 
 MANPAGES = pkgadd.8 pkgrm.8 pkginfo.8 pkgmk.8 rejmerge.8 pkgmk.conf.5
 
-all: pkgadd pkgmk rejmerge man
+all: pkgadd pkgmk vercmp rejmerge man
 
 pkgadd: .depend $(OBJECTS)
 	$(CXX) $(OBJECTS) -o $@ $(LDFLAGS)
 
 pkgmk: pkgmk.in
+
+vercmp: vercmp.c
+	$(CC) -DVERSION=\"$(VERSION)\" $(CFLAGS) vercmp.c govno.c strlcpy.c -o vercmp
 
 rejmerge: rejmerge.in
 
@@ -80,6 +83,7 @@ install: all
 	install -D -m0755 pkgadd $(DESTDIR)$(BINDIR)/pkgadd
 	install -D -m0644 pkgadd.conf $(DESTDIR)$(ETCDIR)/pkgadd.conf
 	install -D -m0755 pkgmk $(DESTDIR)$(BINDIR)/pkgmk
+	install -D -m0755 vercmp $(DESTDIR)$(BINDIR)/vercmp
 	install -D -m0755 rejmerge $(DESTDIR)$(BINDIR)/rejmerge
 	install -D -m0644 pkgmk.conf $(DESTDIR)$(ETCDIR)/pkgmk.conf
 	install -D -m0644 rejmerge.conf $(DESTDIR)$(ETCDIR)/rejmerge.conf
@@ -93,12 +97,12 @@ install: all
 	ln -sf pkgadd $(DESTDIR)$(BINDIR)/pkginfo
 
 clean:
-	rm -f .depend
+	rm -f .depend vercmp
 	rm -f $(OBJECTS)
 	rm -f $(MANPAGES)
 	rm -f $(MANPAGES:=.txt)
 
 distclean: clean
-	rm -f pkgadd pkginfo pkgrm pkgmk rejmerge
+	rm -f pkgadd pkginfo pkgrm pkgmk rejmerge vercmp
 
 # End of file

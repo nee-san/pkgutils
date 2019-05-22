@@ -44,6 +44,7 @@
 #include <archive_entry.h>
 
 #define INIT_ARCHIVE(ar) \
+	archive_read_support_filter_zstd((ar)); \
 	archive_read_support_filter_lz4((ar)); \
 	archive_read_support_filter_gzip((ar)); \
 	archive_read_support_filter_bzip2((ar)); \
