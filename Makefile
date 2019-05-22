@@ -26,7 +26,7 @@ BINDIR = $(PREFIX)/bin
 MANDIR = $(PREFIX)/share/man
 ETCDIR = /etc
 
-VERSION = 6.00.0-alpha
+VERSION = 6.00.0-alpha2
 NAME = pkgutils-$(VERSION)
 
 CXXFLAGS += -DNDEBUG
@@ -49,7 +49,7 @@ pkgadd: .depend $(OBJECTS)
 pkgmk: pkgmk.in
 
 vercmp: vercmp.c
-	$(CC) -DVERSION=\"$(VERSION)\" $(CFLAGS) vercmp.c govno.c strlcpy.c -o vercmp
+	$(CC) $(CFLAGS) vercmp.c dewey.c -o vercmp
 
 rejmerge: rejmerge.in
 
